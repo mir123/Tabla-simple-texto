@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <script data-main="app" src="lib/require.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link rel="stylesheet" href="bootstrap.css" />
+    <title>✈ Greenpeace flight detail clipper</title>
+    <style>
+        .container {
+            width: 100%;
+        }
+        
+        #editableDiv div {
+            display: inline;
+        }
+        
+        #editableDiv {
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: small;
+            border: 1px solid grey;
+            margin: 10px;
+            padding: 10px;
+            display: block;
+            background-color: white;
+            box-sizing: content-box;
+        }
+        
+        .selected {
+            background: rgb(180, 180, 224);
+        }
+        
+        .invisible {
+            display: none;
+        }
+        
+        .copyBox {
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: medium;
+            border: 1px solid grey;
+            margin: 10px;
+            padding: 10px;
+            display: block;
+            background-color: white;
+            box-sizing: content-box;
+        }
+        
+        .crosshair {
+            cursor: crosshair;
+        }
+        
+        .about {
+            float: right;
+        }
+    </style>
+</head>
+
+<body style="background-color: lightslategrey;">
+    <div class="container">
+        <h1>Greenpeace flight detail clipper ✈</h1>
+        <!-- <div class="about">
+            <small><a href="clipper_about.html">What's this?</a></small> 
+        </div> -->
+        <br />
+        <p>
+            <strong>1. Paste flight details or any HTML or spreadsheet table
+          below</strong
+        >
+        <button type="button" id="clear" class="btn btn-primary">Clear</button>
+      </p>
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          value=""
+          id="row_lines"
+        />
+        <label class="form-check-label" for="defaultCheck1">
+          Markdown compatibility
+        </label>
+      </div>
+
+      <span id="editableDiv" contenteditable="true" class="text-monospace">
+      </span>
+
+      <p><strong>2. Select desired section above</strong></p>
+
+        <p><strong>3. Copy from here:</strong></p>
+        <span id="finishedText" class="copyBox"></span>
+    </div>
+</body>
+
+</html>
