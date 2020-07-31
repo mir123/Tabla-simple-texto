@@ -5,6 +5,16 @@
     <meta charset="utf-8" />
     <script data-main="app" src="lib/require.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Easily paste and covnert HTML tables or spreadsheets to plain text" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@mir_lentejas" />
+    <meta name="twitter:title" content="Tablas simples: convert web tables to plain text" />
+    <meta name="twitter:description" content="Easily paste and covnert HTML tables or spreadsheets to plain text" />
+    <meta name="twitter:image" content="https://www.yaurisbeth.com/table.jpg" />
+    <meta property="og:title" content="Tablas simples: convert web tables to plain text" />
+    <meta property="og:description" content="Easily paste and covnert web tables or spreadsheets to plain text" />
+    <meta property="og:image" content="https://www.yaurisbeth.com/table.jpg" />
+
     <link rel="stylesheet" href="bootstrap.css" />
     <title>Tablas simples: Markdown and plain text table converter</title>
     <style>
@@ -24,6 +34,7 @@
             box-sizing: content-box;
             min-height: 2em;
             overflow-y: scroll;
+            width: 100%;
         }
         
         .selected {
@@ -42,14 +53,16 @@
             margin: 10px;
             padding: 10px;
             display: block;
-            background-color: lightgray;
+            background-color: rgb(221, 221, 221);
             box-sizing: content-box;
             min-height: 2em;
             overflow-y: scroll;
+            width: 100%;
+            resize: both;
         }
         
         .lightgreybackground {
-            background-color: lightgray;
+            background-color: rgb(221, 221, 221);
         }
         
         pre {
@@ -73,11 +86,9 @@
 <body style="background-color: #fffcfa;">
     <div class="container">
         <h1>
-            <strong>Tablas simples 🪑:</strong> HTML table (or spreadsheet) to plain text converter
+            <strong>Tablas simples 🪑</strong><br />Convert web tables and spreadsheets to plain text
         </h1>
-        <!-- <div class="about">
-            <small><a href="clipper_about.html">What's this?</a></small> 
-        </div> -->
+
         <br />
         <p>
             <strong>1. Paste web or spreadsheet table below</strong>
@@ -86,7 +97,7 @@
         <div class="form-check">
             <input class="form-check-input" type="checkbox" value="" id="row_lines" />
             <label class="form-check-label" for="defaultCheck1">
-          Markdown compatibility
+          <small>Markdown compatibility</small>
         </label>
         </div>
 
@@ -95,8 +106,8 @@
 
         <p><strong>2. Select desired section above</strong></p>
 
-        <p><strong>3. Copy from here:</strong></p>
-        <span id="finishedText" class="copyBox lightgreybackground"></span>
+        <p><strong>3. Edit and copy from here:</strong></p>
+        <span id="finishedText" contenteditable="true" class="copyBox lightgreybackground"></span>
 
         <h2>What's this?</h2>
 
