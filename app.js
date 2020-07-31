@@ -142,8 +142,9 @@ require(["jquery"], function($) {
             });
 
             var markdown = turndownService.turndown(pastedData);
-            console.log(maxHeight);
+            //console.log(maxHeight);
             //alert(markdown);
+
             $("#editableDiv").html(markdown);
             $("#editableDiv").addClass("box-wrap");
             $("#editableDiv").addClass("crosshair");
@@ -165,11 +166,15 @@ require(["jquery"], function($) {
             $("#editableDiv").removeClass("box-wrap");
             $("#editableDiv").removeClass("crosshair");
             $("#finishedText").empty();
+            $("#finishedText").removeClass("whitebackground");
+            $("#finishedText").addClass("lightgreybackground");
         });
         $("#row_lines").prop("checked", false);
 
         $("#row_lines").change(function() {
             $("#finishedText").empty();
+            $("#finishedText").removeClass("whitebackground");
+            $("#finishedText").addClass("lightgreybackground");
             maxWidth = [];
             maxHeight = [];
             processPaste(editableDiv, pastedData);
@@ -311,7 +316,7 @@ require(["selection"], function(Selection) {
             //linesTrim.forEach((line, lineNumber) => {
             finishedLines.forEach((line, lineNumber) => {
                 if (lineNumber == headerRowPos - miny) {
-                    console.log(headerRowPos - miny);
+                    //console.log(headerRowPos - miny);
 
                     final +=
                         "<span style='font-family:monospace;'>" +
@@ -334,6 +339,8 @@ require(["selection"], function(Selection) {
             });
             final += "</pre>";
             $("#finishedText").html(final);
+            $("#finishedText").removeClass("lightgreybackground");
+            $("#finishedText").addClass("whitebackground");
         });
 
     function htmlEntities(str) {
