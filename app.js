@@ -9,6 +9,7 @@ requirejs.config({
 });
 
 var maxWidth = [];
+var maxHeight = [];
 
 requirejs(["turndown"]);
 requirejs(["joplin-turndown-plugin-gfm_mod"]);
@@ -63,7 +64,7 @@ require(["jquery"], function($) {
                                 "th",
                             ],
                         });
-                        console.log(cleanPaste);
+                        //console.log(cleanPaste);
                         processPaste(editableDiv, cleanPaste);
                         //processPaste(editableDiv, pastedData);
                     }, 100);
@@ -141,7 +142,7 @@ require(["jquery"], function($) {
             });
 
             var markdown = turndownService.turndown(pastedData);
-
+            console.log(maxHeight);
             //alert(markdown);
             $("#editableDiv").html(markdown);
             $("#editableDiv").addClass("box-wrap");
@@ -170,6 +171,7 @@ require(["jquery"], function($) {
         $("#row_lines").change(function() {
             $("#finishedText").empty();
             maxWidth = [];
+            maxHeight = [];
             processPaste(editableDiv, pastedData);
         });
     });
@@ -222,6 +224,7 @@ require(["selection"], function(Selection) {
             var x, y;
             var maxx = 0;
             var minx = 9999999;
+            var miny = 9999999;
             var newDiv = document.createElement("div");
             var newContent = document.createTextNode("\n");
             newDiv.appendChild(newContent);
@@ -231,7 +234,7 @@ require(["selection"], function(Selection) {
             // Determine which columns where selected
             $.each(selection, function(index, item) {
                 x = parseInt($(item).attr("x"));
-                y = $(item).attr("y");
+                y = parseInt($(item).attr("y"));
 
                 if (x > maxx) {
                     maxx = x;
@@ -239,6 +242,10 @@ require(["selection"], function(Selection) {
 
                 if (x < minx) {
                     minx = x;
+                }
+
+                if (y < miny) {
+                    miny = y;
                 }
 
                 if (y == line) {} else {
@@ -251,9 +258,6 @@ require(["selection"], function(Selection) {
             finishedText = htmlEntities(finishedText);
             var final = "<pre>";
             var finishedLines = finishedText.split("\n");
-            // var linesTrim = finishedLines.filter(function(el) {
-            //     return el != "";
-            // });
 
             // Create divider for heading rows
             var divider = "";
@@ -263,8 +267,22 @@ require(["selection"], function(Selection) {
             var rightPipe = "";
             if ($("#row_lines").is(":checked")) {
                 dividerPad = "-";
+                headerRowPos = miny + 1;
             } else {
                 dividerPad = "=";
+                // Find out in which row we made the cut so the header line is properly positioned in case of multi-line rows
+                var headerRowPos = 0;
+                var currContentHeight = 0;
+
+                for (let i = 0; i < maxHeight.length; i++) {
+                    if (miny <= i + currContentHeight) {
+                        headerRowPos = i + currContentHeight;
+
+                        break;
+                    } else {
+                        currContentHeight += maxHeight[i];
+                    }
+                }
             }
 
             maxWidth.forEach((width) => {
@@ -288,20 +306,29 @@ require(["selection"], function(Selection) {
 
             maxx = 0;
             minx = 9999999;
-
+            var currRow = 0;
+            var currContentHeight = maxHeight[currRow]; // Equal to the height of the first row
             //linesTrim.forEach((line, lineNumber) => {
             finishedLines.forEach((line, lineNumber) => {
-                final +=
-                    "<span style='font-family:monospace;'>" +
-                    leftPipe +
-                    line +
-                    rightPipe +
-                    "</span><br/>";
-                if (lineNumber == 0) {
+                if (lineNumber == headerRowPos - miny) {
+                    console.log(headerRowPos - miny);
+
                     final +=
                         "<span style='font-family:monospace;'>" +
                         // divider.padEnd(line.length, dividerPad) +
                         partDivider +
+                        "</span><br/>";
+                }
+
+                if (
+                    $("#row_lines").is(":checked") ||
+                    lineNumber != headerRowPos - miny
+                ) {
+                    final +=
+                        "<span style='font-family:monospace;'>" +
+                        leftPipe +
+                        line +
+                        rightPipe +
                         "</span><br/>";
                 }
             });
