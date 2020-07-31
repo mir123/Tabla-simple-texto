@@ -2,7 +2,7 @@
 
 Easily produce tables in plain text (Markdown or otherwise) for your emails or documents by copying and pasting an HTML table or spreadsheet. After pasting, select the columns you need and ASCII or Markdown comes out. Good for taming unwieldy and complex tables you need to forward on emails or to copy just a section of it.
 
-You can test it (here)[http://mirrodriguezlombardo.com/Tabla-simple-texto/].
+You can test it [here](http://mirrodriguezlombardo.com/Tablas-simples/).
 
 Copy and paste the table in the first text area, then select just the columns you need and a simple table appears in the second space ready for you to copy and paste into your text editor, Markdown document or email.
 
