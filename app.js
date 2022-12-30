@@ -141,11 +141,9 @@ require(["jquery"], function($) {
                 },
             });
 
-            var markdown = turndownService.turndown(pastedData);
-            //console.log(maxHeight);
-            //alert(markdown);
+            var processedText = turndownService.turndown(pastedData);
 
-            $("#editableDiv").html(markdown);
+            $("#editableDiv").html(processedText);
             $("#editableDiv").addClass("box-wrap");
             $("#editableDiv").addClass("crosshair");
 
@@ -171,7 +169,7 @@ require(["jquery"], function($) {
         });
         $("#row_lines").prop("checked", false);
 
-        $("#row_lines").change(function() {
+        $("input[type=radio][name=process_mode]").change(function() {
             $("#finishedText").empty();
             $("#finishedText").removeClass("whitebackground");
             $("#finishedText").addClass("lightgreybackground");
@@ -224,6 +222,20 @@ require(["selection"], function(Selection) {
         .on("stop", ({ inst }) => {
             // Remember selection in case the user wants to add smth in the next one
             inst.keepSelection();
+            var Markdown,
+                textTable,
+                simplerText = false;
+            switch ($("input[name='process_mode']:checked").val()) {
+                case "markdown":
+                    Markdown = true;
+                    break;
+                case "text_table":
+                    textTable = true;
+                    break;
+                case "simpler_text":
+                    simplerText = true;
+            }
+
             var selection = inst.getSelection();
             var line = 0;
             var x, y;
@@ -266,15 +278,19 @@ require(["selection"], function(Selection) {
 
             // Create divider for heading rows
             var divider = "";
+            var bottomBorder = "";
             var dividerPad = "";
+            var borderPad = "";
             var partDivider = "";
+            var partBottom = "";
             var leftPipe = "";
             var rightPipe = "";
-            if ($("#row_lines").is(":checked")) {
+            if (Markdown) {
                 dividerPad = "-";
                 headerRowPos = miny + 1;
             } else {
                 dividerPad = "=";
+                borderPad = "-";
                 // Find out in which row we made the cut so the header line is properly positioned in case of multi-line rows
                 var headerRowPos = 0;
                 var currContentHeight = 0;
@@ -282,7 +298,6 @@ require(["selection"], function(Selection) {
                 for (let i = 0; i < maxHeight.length; i++) {
                     if (miny <= i + currContentHeight) {
                         headerRowPos = i + currContentHeight;
-
                         break;
                     } else {
                         currContentHeight += maxHeight[i];
@@ -292,18 +307,23 @@ require(["selection"], function(Selection) {
 
             maxWidth.forEach((width) => {
                 divider += "|" + dividerPad.repeat(width);
+                bottomBorder += "+" + borderPad.repeat(width);
             });
             divider += "|";
+            bottomBorder += "+";
 
             if (divider.substr(minx, 1) != "|") {
                 partDivider = "|" + divider.substr(minx, maxx - minx + 1);
+                partBottom = "+" + bottomBorder.substr(minx, maxx - minx + 1);
                 leftPipe = "|";
             } else {
                 partDivider = divider.substr(minx, maxx - minx + 1);
+                partBottom = bottomBorder.substr(minx, maxx - minx + 1);
                 leftPipe = "";
             }
-            if (divider.substr(maxx, 1) != "|") {
+            if (divider.substr(maxx, 1) != "|" && !simplerText) {
                 partDivider += "|";
+                partBottom += "+";
                 rightPipe = "|";
             } else {
                 rightPipe = "";
@@ -317,17 +337,29 @@ require(["selection"], function(Selection) {
             finishedLines.forEach((line, lineNumber) => {
                 if (lineNumber == headerRowPos - miny) {
                     //console.log(headerRowPos - miny);
-
-                    final +=
-                        "<span style='font-family:monospace;'>" +
-                        // divider.padEnd(line.length, dividerPad) +
-                        partDivider +
-                        "</span><br/>";
+                    if (Markdown || (textTable && lineNumber > 0)) {
+                        // Cut did not happen right at a line
+                        final +=
+                            "<span style='font-family:monospace;'>" +
+                            // divider.padEnd(line.length, dividerPad) +
+                            partDivider +
+                            "</span><br/>";
+                        console.log(partDivider);
+                        console.log("Markdown: " + Markdown);
+                    }
+                    // else {
+                    //   // Cut happened right at a line so keep it
+                    //   final +=
+                    //     "<span style='font-family:monospace;'>" +
+                    //     partBottom +
+                    //     "</span><br/>";
+                    // }
                 }
 
                 if (
-                    $("#row_lines").is(":checked") ||
-                    lineNumber != headerRowPos - miny
+                    Markdown ||
+                    lineNumber != headerRowPos - miny ||
+                    (lineNumber == headerRowPos - miny && (!Markdown || lineNumber == 0))
                 ) {
                     final +=
                         "<span style='font-family:monospace;'>" +
@@ -337,6 +369,11 @@ require(["selection"], function(Selection) {
                         "</span><br/>";
                 }
             });
+            if (textTable == true) {
+                final +=
+                    "<span style='font-family:monospace;'>" + partBottom + "</span><br/>";
+                console.log(partBottom);
+            }
             final += "</pre>";
             $("#finishedText").html(final);
             $("#finishedText").removeClass("lightgreybackground");

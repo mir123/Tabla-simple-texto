@@ -5,14 +5,14 @@
     <meta charset="utf-8" />
     <script data-main="app" src="lib/require.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="Easily transform HTML tables from the web or spreadsheets to plain text" />
+    <meta name="description" content="Easily transform HTML tables from the web or spreadsheets into plain text" />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@mir_lentejas" />
     <meta name="twitter:title" content="Tablas simples" />
-    <meta name="twitter:description" content="Easily transform HTML tables from the web or spreadsheets to plain text" />
+    <meta name="twitter:description" content="Easily transform HTML tables from the web or spreadsheets into plain text" />
     <meta name="twitter:image" content="http://mirrodriguezlombardo.com/Tablas-simples/table.jpg" />
     <meta property="og:title" content="Tablas simples" />
-    <meta property="og:description" content="Easily transform HTML tables from the web or spreadsheets to plain text" />
+    <meta property="og:description" content="Easily transform HTML tables from the web or spreadsheets into plain text" />
     <meta property="og:image" content="http://mirrodriguezlombardo.com/Tablas-simples/table.jpg" />
 
     <link rel="stylesheet" href="bootstrap.css" />
@@ -94,11 +94,33 @@
             <strong>1. Paste web or spreadsheet table below</strong>
             <button type="button" id="clear" class="btn btn-primary">Clear</button>
         </p>
-        <div class="form-check">
+        <!-- <div class="form-check">
             <input class="form-check-input" type="checkbox" value="" id="row_lines" />
             <label class="form-check-label" for="defaultCheck1">
           <small>Markdown compatibility</small>
-        </label>
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            id="simpler_text"
+          />
+          <label class="form-check-label">
+            <small>Simpler text</small>
+          </label>
+            </label>
+        </div> -->
+
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="process_mode" id="markdown" value="markdown" />
+            <label class="form-check-label" for="inlineRadio1">Markdown</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="process_mode" id="text_table" value="text_table" />
+            <label class="form-check-label" for="inlineRadio2">Text table</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="process_mode" id="simpler_text" value="simpler_text" checked />
+            <label class="form-check-label" for="inlineRadio3">Simpler text</label>
         </div>
 
         <span id="editableDiv" contenteditable="true" class="text-monospace">
@@ -123,7 +145,7 @@
 
         <p>
             I like plain text. Sometimes I want to easily copy and paste tables and spreadsheets into emails or text documents. Specifically, I needed to forward flight itineraries on email which I was getting on ugly HTML tables. There are similar tools, such as
-            <a href="https://ozh.github.io/ascii-tables/" rel="nofollow">ACII table generator</a
+            <a href="https://ozh.github.io/ascii-tables/" rel="nofollow">ASCII table generator</a
         >,
         <a href="https://jmalarcon.github.io/markdowntables/" rel="nofollow"
           >markdownTables</a
